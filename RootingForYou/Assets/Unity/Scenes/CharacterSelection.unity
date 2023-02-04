@@ -2999,10 +2999,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstCharacterImage: {fileID: 2058444290}
   firstCharacterAccessory: {fileID: 931987635}
+  firstCharacterName: {fileID: 0}
   secondCharacterImage: {fileID: 816229405}
   secondCharacterAccessory: {fileID: 1639327467}
+  secondCharacterName: {fileID: 0}
   CharacterSprites: []
   CosmeticSprites: []
+  CharacterNames: []
 --- !u!1 &1876541252
 GameObject:
   m_ObjectHideFlags: 0
@@ -3243,7 +3246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 414441037}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &2003059571
