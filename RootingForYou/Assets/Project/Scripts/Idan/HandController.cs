@@ -15,7 +15,7 @@ public class HandController : MonoBehaviour
     [SerializeField] private Rigidbody[] m_armRigidbodies = null;
     [SerializeField] private GameObject m_connectionPoint = null;
     [SerializeField] private HandGrabbingHelper m_handGrabbingHelper = null;
-    [Range(1.0f, 21.0f)] [SerializeField] private float m_maxDistanceFromBody = 1.0f;
+    [Range(1.0f, 70.0f)] [SerializeField] private float m_maxDistanceFromBody = 1.0f;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_forceMultiplier = 10.0f;
     [Range(1.0f, 10.0f)] [SerializeField] private float m_movementDrag = 5.0f;
     //helpers
@@ -56,7 +56,24 @@ public class HandController : MonoBehaviour
         }
         
     }
+    private void UnfreezeHand()
+    {
+        foreach (Rigidbody armBody in m_armRigidbodies)
+        {
+            armBody.isKinematic = false;
+        }
 
+        m_handRigidbody.isKinematic = false;
+    }
+    private void FreezeHand()
+    {
+        foreach (Rigidbody armBody in m_armRigidbodies)
+        {
+            armBody.isKinematic = true;
+        }
+
+        m_handRigidbody.isKinematic = true;
+    }
     private void UnlockHand()
     {
         if (!m_isLocked)

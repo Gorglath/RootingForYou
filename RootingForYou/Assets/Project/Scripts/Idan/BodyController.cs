@@ -61,9 +61,10 @@ public class BodyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        LockBodyUpRotation();
         if (m_isLocked)
             return;
+
+        LockBodyUpRotation();
 
         m_isTouchingGround = m_groundDetectors[0].GetIsTouchingGround() && m_groundDetectors[1].GetIsTouchingGround();
 
