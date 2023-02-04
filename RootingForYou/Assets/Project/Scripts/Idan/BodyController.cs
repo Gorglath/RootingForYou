@@ -5,8 +5,10 @@ using UnityEngine;
 public class BodyController : MonoBehaviour
 {
     [Header("Parameters")]
-    [SerializeField] private Rigidbody m_rootRigidbody = null;
+    [SerializeField] private HandGrabbingHelper[] m_groundDetectors = null;
+    [SerializeField] private Rigidbody[] m_legsRigidbodies = null;
     [SerializeField] private Rigidbody[] m_bodyRigidbodies = null;
+    [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodyGravityForce = 10.0f;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodyRotationForce = 10.0f;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodySnappingUpForce = 10.0f;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodySnappingUpDrag = 10.0f;
@@ -14,6 +16,7 @@ public class BodyController : MonoBehaviour
     //helpers
     private int m_locksCount = 0;
     private bool m_isLocked = false;
+    private bool m_isTouchingGround = false;
     public void LockBody()
     {
         m_locksCount++;
@@ -25,12 +28,18 @@ public class BodyController : MonoBehaviour
     }
     public void LockBodyUpRotation()
     {
-        Quaternion rot;
         foreach (Rigidbody body in m_bodyRigidbodies)
         {
             Vector3 springTorque = m_bodySnappingUpForce * Vector3.Cross(body.transform.right,Vector3.right);
             Vector3 dampTorque = m_bodySnappingUpDrag * -body.angularVelocity;
             body.AddTorque(springTorque + dampTorque, ForceMode.Acceleration);
+        }
+    }
+    private void ApplyGravity()
+    {
+        foreach (Rigidbody body in m_legsRigidbodies)
+        {
+            body.AddForce(Vector2.down * m_bodyGravityForce);
         }
     }
     public void UnlockBody()
@@ -56,7 +65,11 @@ public class BodyController : MonoBehaviour
         if (m_isLocked)
             return;
 
-        Quaternion rot;
+        m_isTouchingGround = m_groundDetectors[0].GetIsTouchingGround() && m_groundDetectors[1].GetIsTouchingGround();
+
+        if(!m_isTouchingGround)
+            ApplyGravity();
+
         foreach (Rigidbody body in m_bodyRigidbodies)
         {
             Vector3 springTorque = m_bodySnappingUpForce * Vector3.Cross(body.transform.up, Vector3.up);

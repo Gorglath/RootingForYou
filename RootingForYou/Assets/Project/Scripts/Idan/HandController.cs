@@ -6,36 +6,53 @@ using UnityEngine.InputSystem;
 public class HandController : MonoBehaviour
 {
     [Header("Parameters")]
+    [SerializeField] private bool m_isToggleTypeGrab = false;
     [SerializeField] private PlayerInput m_playerInput = null;
     [SerializeField] private string m_moveActionName = null;
     [SerializeField] private string m_lockActionName = null;
     [SerializeField] private BodyController m_bodyController = null;
     [SerializeField] private Rigidbody m_handRigidbody = null;
     [SerializeField] private Rigidbody[] m_armRigidbodies = null;
+    [SerializeField] private GameObject m_connectionPoint = null;
+    [SerializeField] private HandGrabbingHelper m_handGrabbingHelper = null;
+    [Range(1.0f, 21.0f)] [SerializeField] private float m_maxDistanceFromBody = 1.0f;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_forceMultiplier = 10.0f;
     [Range(1.0f, 10.0f)] [SerializeField] private float m_movementDrag = 5.0f;
     //helpers
-    private GameObject m_grabbableObject = null;
-    //private Vector3 m_grabLocation = Vector3.zero;
+    private CharacterJoint[] m_connectedPointJoints = null;
     private Vector2 m_inputDirection = Vector2.zero;
     private bool m_enabledPhysics = true;
-    private bool m_isAbleToGrab = false;
     private bool m_isLocked = false;
+    private void Start()
+    {
+        m_connectedPointJoints = m_connectionPoint.GetComponents<CharacterJoint>();
+    }
+    public void SetGrabType(bool isToggle)
+    {
+        m_isToggleTypeGrab = isToggle;
+    }
     private void Update()
     {
         m_inputDirection = m_playerInput.actions[m_moveActionName].ReadValue<Vector2>();
 
         if (m_playerInput.actions[m_lockActionName].WasReleasedThisFrame())
         {
+            if (m_isToggleTypeGrab)
+                return;
             UnlockHand();
         }
 
-        if (!m_isAbleToGrab)
-            return;
-
         if (m_playerInput.actions[m_lockActionName].WasPressedThisFrame())
         {
-            LockHand();
+            if (m_isToggleTypeGrab && m_isLocked)
+            {
+                UnlockHand();
+            }
+            else
+            {
+                LockHand();
+            }
+            
         }
         
     }
@@ -46,17 +63,32 @@ public class HandController : MonoBehaviour
             return;
 
         m_bodyController.UnlockBody();
-        m_handRigidbody.isKinematic = false;
         m_isLocked = false;
+        m_handGrabbingHelper.SetIsAbleToGrab(true);
+
+        m_connectionPoint.transform.position = m_handRigidbody.position;
+
+        m_connectedPointJoints[0].connectedBody = null;
+        m_connectedPointJoints[1].connectedBody = null;
     }
     private void LockHand()
     {
         if (m_isLocked)
             return;
 
+        Rigidbody body = m_handGrabbingHelper.GetAvailableRigidbody();
+        if (!body)
+            return;
+
         m_bodyController.LockBody();
-        m_handRigidbody.isKinematic = true;
         m_isLocked = true;
+
+        m_connectionPoint.transform.position = m_handRigidbody.position;
+        
+        m_connectedPointJoints[0].connectedBody = body;
+        m_connectedPointJoints[1].connectedBody = m_handRigidbody;
+        m_handGrabbingHelper.SetIsAbleToGrab(false);
+
     }
     private void FixedUpdate()
     {
@@ -76,8 +108,11 @@ public class HandController : MonoBehaviour
             return;
 
         Vector3 Direction = Vector3.Cross(-m_inputDirection, Vector3.up);
-        m_bodyController.ApplyForceToBody(m_inputDirection);
+        float multiplier = Vector3.Distance(m_handRigidbody.position, m_bodyController.transform.position) / m_maxDistanceFromBody;
+
+        m_bodyController.ApplyForceToBody(m_inputDirection * multiplier);
     }
+
     private void HandleHandMovement()
     {
         if (m_inputDirection.magnitude == 0)
@@ -97,7 +132,8 @@ public class HandController : MonoBehaviour
             return;
         }
 
-        m_handRigidbody.AddForce(m_inputDirection * m_forceMultiplier);
+        float multiplier = Vector3.Distance(m_handRigidbody.position, m_bodyController.transform.position) / m_maxDistanceFromBody;
+        m_handRigidbody.AddForce(m_inputDirection * m_forceMultiplier * multiplier);
 
         if (!m_enabledPhysics)
             return;
@@ -112,27 +148,5 @@ public class HandController : MonoBehaviour
         m_handRigidbody.useGravity = false;
         m_handRigidbody.drag = m_movementDrag;
 
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!collision.collider.CompareTag("Grabbable"))
-            return;
-
-        m_grabbableObject = collision.gameObject;
-        //m_grabLocation = collision.GetContact(0).point;
-        m_isAbleToGrab = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (!m_grabbableObject)
-            return;
-
-        if (m_grabbableObject != collision.gameObject)
-            return;
-
-        m_grabbableObject = null;
-        m_isAbleToGrab = false;
     }
 }

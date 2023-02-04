@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Grabbable
+  - Grabbable2
   layers:
   - Default
   - TransparentFX
