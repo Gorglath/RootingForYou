@@ -14,6 +14,8 @@ public class Player
 }
 public class Master : MonoBehaviour
 {
+    public DelayedEvent[] onSpawnWall;
+    public DelayedEvent[] onPlayerSuccess;
     private WallManager wallManager;
     //public Wall wall;
     public Detector[] detectors;
@@ -49,6 +51,8 @@ public class Master : MonoBehaviour
                     averageDistance += detector.GetAverageDistance();
                     scoreManager.IncreaseMultiplier();
                     wallManager.speed += scoreManager.speedModifier;
+                    // Success event
+                    DelayedEventManager.m_instance.InvokeDelayedEvents(onPlayerSuccess);
 
                 }
                 else
@@ -69,6 +73,7 @@ public class Master : MonoBehaviour
             scoreManager.ComputeScore(averageDistance);
             Debug.Log("WE DID IT AND GOT :" + scoreManager.GetScore());
             wallManager.ChangeWall();
+            DelayedEventManager.m_instance.InvokeDelayedEvents(onSpawnWall);
             ResetSensors();
             wallManager.GetCurrentWall().SetIsTriggered(false);
 
