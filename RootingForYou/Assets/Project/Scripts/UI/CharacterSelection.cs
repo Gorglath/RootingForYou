@@ -63,7 +63,7 @@ public class CharacterSelection : MonoBehaviour
     private void Update()
     {
         NavigationInput = m_playerInput.actions[m_navigateActionName].ReadValue<Vector2>();
-        if (NavigationInput.magnitude == 0)
+        if (NavigationInput.y == 0)
         {
             didReset = true;
             return;
@@ -156,7 +156,7 @@ public class CharacterSelection : MonoBehaviour
     public void NavigateMenuVertically(float pNavigationMagnitude)
     {
         EventSystem.current.SetSelectedGameObject(null);
-        if (pNavigationMagnitude < 0)
+        if (pNavigationMagnitude <= 0)
             CharacterSelectionButtonIndex++;
         else
             CharacterSelectionButtonIndex--;
