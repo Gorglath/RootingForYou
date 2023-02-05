@@ -6,8 +6,9 @@ using UnityEngine.Events;
 public class BodyController : MonoBehaviour
 {
     [Header("Parameters")]
-    [SerializeField] private UnityEvent m_onUnfreeze = null;
-    
+    [SerializeField] private DelayedEvent[] m_onUnfreeze = null;
+    [SerializeField] private DelayedEvent[] m_onFreeze = null;
+
     [Space(20.0f)]
 
     [SerializeField] private HandGrabbingHelper[] m_groundDetectors = null;
@@ -87,6 +88,8 @@ public class BodyController : MonoBehaviour
             return;
 
         m_isFrozen = true;
+        DelayedEventManager.m_instance.InvokeDelayedEvents(m_onFreeze);
+
         foreach (Rigidbody body in m_allBodies)
         {
             body.isKinematic = true;
@@ -98,6 +101,7 @@ public class BodyController : MonoBehaviour
         m_freezeCount--;
 
         m_isFrozen = false;
+        DelayedEventManager.m_instance.InvokeDelayedEvents(m_onUnfreeze);
         foreach (Rigidbody body in m_allBodies)
         {
             body.isKinematic = false;

@@ -6,10 +6,11 @@ using UnityEngine.Events;
 public class HandGrabbingHelper : MonoBehaviour
 {
     [Header("Parameters")]
-    [SerializeField] private UnityEvent m_onUnfreeze = null;
+    [SerializeField] private DelayedEvent[] m_onSlamGround = null;
 
     [SerializeField] private string m_tagToGrab = null;
-
+    [SerializeField] private bool m_isBodyRelated = false;
+    [Range(1.0f, 20)] [SerializeField] private float m_magnitudeToTriggerEvent = 1.0f;
     //helpers
     private Rigidbody m_availableBodyToGrab = null;
     private bool m_isAbleToGrab = true;
@@ -26,18 +27,28 @@ public class HandGrabbingHelper : MonoBehaviour
             return;
 
         m_isTouchingTheThing = true;
-        m_availableBodyToGrab = other.GetComponent<Rigidbody>();
+
+        if (m_isBodyRelated)
+        {
+            if (GetComponent<Rigidbody>().velocity.magnitude > m_magnitudeToTriggerEvent)
+                DelayedEventManager.m_instance.InvokeDelayedEvents(m_onSlamGround);
+        }
+        else
+        {
+            m_availableBodyToGrab = other.GetComponent<Rigidbody>();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!m_availableBodyToGrab)
             return;
-        
+
+        m_isTouchingTheThing = false;
+
         if (m_availableBodyToGrab.gameObject != other.gameObject)
             return;
 
-        m_isTouchingTheThing = false;
         m_availableBodyToGrab = null;
     }
     public void SetIsAbleToGrab(bool isAbleToGrab)
