@@ -40,6 +40,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "RightFreeze",
+                    "type": "Button",
+                    "id": "16b76711-413f-4525-aadc-d64929c02de2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LeftFreeze",
+                    "type": "Button",
+                    "id": "d4f8d698-c73a-4134-a458-49d240b60d96",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -84,6 +102,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "RightGrab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0bb3c8bb-846f-4886-82d8-af25777b60c5",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RightFreeze",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d6146dd1-2bba-4903-82fd-68c060a51eb8",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "LeftFreeze",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

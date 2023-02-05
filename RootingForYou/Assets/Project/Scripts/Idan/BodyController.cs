@@ -8,14 +8,22 @@ public class BodyController : MonoBehaviour
     [SerializeField] private HandGrabbingHelper[] m_groundDetectors = null;
     [SerializeField] private Rigidbody[] m_legsRigidbodies = null;
     [SerializeField] private Rigidbody[] m_bodyRigidbodies = null;
+    [SerializeField] private Transform m_leftHand = null;
+    [SerializeField] private Transform m_rightHand = null;
+    [SerializeField] private Transform m_middleBody = null;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodyGravityForce = 10.0f;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodyRotationForce = 10.0f;
-    [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodySnappingUpForce = 10.0f;
-    [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodySnappingUpDrag = 10.0f;
+    [Range(1.0f, 10000.0f)] [SerializeField] private float m_bodySnappingUpForce = 10.0f;
+    [Range(0.0f, 3.0f)] [SerializeField] private float m_bodySnappingUpDrag = 10.0f;
+    [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodyFrozenForce = 100.0f;
+    [Range(1.0f, 10000.0f)] [SerializeField] private float m_bodyFrozenSnappingForce = 100.0f;
+    [Range(0.0f, 3.0f)] [SerializeField] private float m_bodyFrozenSnappingDrag = 100.0f;
 
     //helpers
     private int m_locksCount = 0;
+    private int m_freezeCount = 0;
     private bool m_isLocked = false;
+    private bool m_isFrozen = false;
     private bool m_isTouchingGround = false;
     public void LockBody()
     {
@@ -51,6 +59,13 @@ public class BodyController : MonoBehaviour
 
         m_isLocked = false;
     }
+    public void ApplyFrozenForceToBody(Vector2 direction)
+    {
+        foreach (Rigidbody body in m_bodyRigidbodies)
+        {
+            body.AddForce(direction * m_bodyFrozenForce);
+        }
+    }
     public void ApplyForceToBody(Vector2 Direction)
     {
         foreach (Rigidbody body in m_bodyRigidbodies)
@@ -58,9 +73,53 @@ public class BodyController : MonoBehaviour
             body.AddForce(Direction * m_bodyRotationForce);
         }
     }
+    public void FreezeBody()
+    {
+        m_freezeCount++;
 
+        if (m_freezeCount < 2)
+            return;
+
+        m_isFrozen = true;
+    }
+
+    public void UnfreezeBody()
+    {
+        m_freezeCount--;
+
+        m_isFrozen = false;
+
+        if (m_freezeCount > 0)
+            return;
+
+    }
+    private void HandleFrozenAlignment()
+    {
+        Vector3 rightHandDirection = (m_rightHand.position - m_middleBody.position).normalized;
+        Vector3 leftHandDirection = (m_leftHand.right - m_middleBody.position).normalized;
+        Vector3 alignmentDirection = Vector3.Cross(rightHandDirection, leftHandDirection);
+
+        float dot = Vector3.Dot(rightHandDirection,leftHandDirection);
+
+        alignmentDirection.z = 0;
+        Debug.Log(dot);
+        Debug.DrawLine(m_middleBody.position, m_middleBody.position + rightHandDirection * 10000, Color.black, Time.fixedDeltaTime);
+        Debug.DrawLine(m_middleBody.position, m_middleBody.position + leftHandDirection * 10000, Color.black, Time.fixedDeltaTime);
+        Debug.DrawLine(m_middleBody.position, m_middleBody.position + alignmentDirection * 10000, Color.black, Time.fixedDeltaTime);
+        foreach (Rigidbody body in m_bodyRigidbodies)
+        {
+            Vector3 springTorque = m_bodyFrozenSnappingForce * Vector3.Cross(body.transform.up, alignmentDirection);
+            Vector3 dampTorque = m_bodyFrozenSnappingDrag * -body.angularVelocity;
+            body.AddTorque(springTorque + dampTorque, ForceMode.Acceleration);
+        }
+    }
     private void FixedUpdate()
     {
+        if(m_isFrozen)
+        {
+            HandleFrozenAlignment();
+            return;
+        }
         if (m_isLocked)
             return;
 

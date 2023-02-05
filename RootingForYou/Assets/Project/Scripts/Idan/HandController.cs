@@ -10,6 +10,7 @@ public class HandController : MonoBehaviour
     [SerializeField] private PlayerInput m_playerInput = null;
     [SerializeField] private string m_moveActionName = null;
     [SerializeField] private string m_lockActionName = null;
+    [SerializeField] private string m_freezeActionName = null;
     [SerializeField] private BodyController m_bodyController = null;
     [SerializeField] private Rigidbody m_handRigidbody = null;
     [SerializeField] private Rigidbody[] m_armRigidbodies = null;
@@ -17,12 +18,17 @@ public class HandController : MonoBehaviour
     [SerializeField] private HandGrabbingHelper m_handGrabbingHelper = null;
     [Range(1.0f, 70.0f)] [SerializeField] private float m_maxDistanceFromBody = 1.0f;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_forceMultiplier = 10.0f;
+    [Range(1.0f, 10000.0f)] [SerializeField] private float m_frozenForceMultiplier = 10.0f;
+    [Range(1.0f, 10000.0f)] [SerializeField] private float m_frozenForceDrag = 10.0f;
     [Range(1.0f, 10.0f)] [SerializeField] private float m_movementDrag = 5.0f;
+    [SerializeField] private bool m_isLeftHanded = false;
     //helpers
     private CharacterJoint[] m_connectedPointJoints = null;
+    private Vector3 m_frozenDirection = Vector3.zero;
     private Vector2 m_inputDirection = Vector2.zero;
     private bool m_enabledPhysics = true;
     private bool m_isLocked = false;
+    private bool m_isFrozen = false;
     private void Start()
     {
         m_connectedPointJoints = m_connectionPoint.GetComponents<CharacterJoint>();
@@ -33,6 +39,17 @@ public class HandController : MonoBehaviour
     }
     private void Update()
     {
+        if (m_playerInput.actions[m_freezeActionName].WasPressedThisFrame())
+        {
+            if (m_isFrozen)
+                UnfreezeHand();
+            else
+                FreezeHand();
+        }
+
+        if (m_isFrozen)
+            return;
+
         m_inputDirection = m_playerInput.actions[m_moveActionName].ReadValue<Vector2>();
 
         if (m_playerInput.actions[m_lockActionName].WasReleasedThisFrame())
@@ -54,25 +71,62 @@ public class HandController : MonoBehaviour
             }
             
         }
-        
+    }
+
+    private void HandleFrozenMovement()
+    {
+        Vector3 springTorque = m_frozenForceMultiplier * Vector3.Cross(m_handRigidbody.transform.right, m_frozenDirection);
+        Vector3 dampTorque = m_frozenForceDrag * -m_handRigidbody.angularVelocity;
+        m_handRigidbody.AddTorque(springTorque + dampTorque, ForceMode.Acceleration);
+
+        foreach (Rigidbody body in m_armRigidbodies)
+        {
+            springTorque = m_frozenForceMultiplier * Vector3.Cross(body.transform.right, m_frozenDirection);
+            dampTorque = m_frozenForceDrag * -body.angularVelocity;
+            body.AddTorque(springTorque + dampTorque, ForceMode.Acceleration);
+        }
+
+        if (m_isLocked)
+        {
+            if(!m_isLeftHanded)
+                m_bodyController.ApplyFrozenForceToBody(-m_frozenDirection);
+            else
+                m_bodyController.ApplyFrozenForceToBody(m_frozenDirection);
+        }
     }
     private void UnfreezeHand()
     {
+        m_isFrozen = false;
         foreach (Rigidbody armBody in m_armRigidbodies)
         {
             armBody.isKinematic = false;
         }
 
-        m_handRigidbody.isKinematic = false;
+        m_bodyController.UnfreezeBody();
+
+        if (!m_enabledPhysics)
+            return;
+
+        m_enabledPhysics = false;
+
+        foreach (Rigidbody armBody in m_armRigidbodies)
+        {
+            armBody.useGravity = false;
+        }
+
+        m_handRigidbody.useGravity = false;
+        m_handRigidbody.drag = m_movementDrag;
+
     }
     private void FreezeHand()
     {
-        foreach (Rigidbody armBody in m_armRigidbodies)
-        {
-            armBody.isKinematic = true;
-        }
+        m_isFrozen = true;
+        if(!m_isLeftHanded)
+            m_frozenDirection = (m_handRigidbody.position - m_armRigidbodies[0].position);
+        else 
+            m_frozenDirection = (m_armRigidbodies[0].position - m_handRigidbody.position);
 
-        m_handRigidbody.isKinematic = true;
+        m_bodyController.FreezeBody();
     }
     private void UnlockHand()
     {
@@ -109,6 +163,11 @@ public class HandController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (m_isFrozen)
+        {
+            HandleFrozenMovement();
+            return;
+        }
         if (!m_isLocked)
         {
             HandleHandMovement();
