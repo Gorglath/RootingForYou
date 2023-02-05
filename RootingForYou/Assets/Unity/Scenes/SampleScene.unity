@@ -758,6 +758,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!4 &444015798 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -1369763198592145659, guid: ef42d2c4a7b9c5546b24b7e3fbc0d201,
+    type: 3}
+  m_PrefabInstance: {fileID: 2125648178}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &460548123
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,9 +1089,9 @@ CapsuleCollider:
   m_Height: 0.71195954
   m_Direction: 1
   m_Center: {x: 0.052010328, y: -0.4486021, z: 0}
---- !u!4 &754771501 stripped
+--- !u!4 &796663836 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 5792906667273688670, guid: ef42d2c4a7b9c5546b24b7e3fbc0d201,
+  m_CorrespondingSourceObject: {fileID: -3288305478076338609, guid: ef42d2c4a7b9c5546b24b7e3fbc0d201,
     type: 3}
   m_PrefabInstance: {fileID: 2125648178}
   m_PrefabAsset: {fileID: 0}
@@ -1806,8 +1812,8 @@ MonoBehaviour:
   - {fileID: 2125648197}
   - {fileID: 56612075}
   - {fileID: 2034653081}
-  m_leftHand: {fileID: 1694131792}
-  m_rightHand: {fileID: 754771501}
+  m_leftHand: {fileID: 444015798}
+  m_rightHand: {fileID: 796663836}
   m_middleBody: {fileID: 2125648204}
   m_bodyGravityForce: 10
   m_bodyRotationForce: 300
@@ -2282,12 +2288,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!4 &1694131792 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -1871126644299292138, guid: ef42d2c4a7b9c5546b24b7e3fbc0d201,
-    type: 3}
-  m_PrefabInstance: {fileID: 2125648178}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1714932272
 GameObject:
   m_ObjectHideFlags: 0

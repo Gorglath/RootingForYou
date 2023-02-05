@@ -96,15 +96,17 @@ public class BodyController : MonoBehaviour
     private void HandleFrozenAlignment()
     {
         Vector3 rightHandDirection = (m_rightHand.position - m_middleBody.position).normalized;
-        Vector3 leftHandDirection = (m_leftHand.right - m_middleBody.position).normalized;
+        rightHandDirection.z = 1;
+        Vector3 leftHandDirection = (m_leftHand.position - m_middleBody.position).normalized;
+        leftHandDirection.z = 1;
         Vector3 alignmentDirection = Vector3.Cross(rightHandDirection, leftHandDirection);
 
         float dot = Vector3.Dot(rightHandDirection,leftHandDirection);
 
         alignmentDirection.z = 0;
         Debug.Log(dot);
-        Debug.DrawLine(m_middleBody.position, m_middleBody.position + rightHandDirection * 10000, Color.black, Time.fixedDeltaTime);
-        Debug.DrawLine(m_middleBody.position, m_middleBody.position + leftHandDirection * 10000, Color.black, Time.fixedDeltaTime);
+        Debug.DrawLine(m_middleBody.position, m_middleBody.position + rightHandDirection * 10000, Color.blue, Time.fixedDeltaTime);
+        Debug.DrawLine(m_middleBody.position, m_middleBody.position + leftHandDirection * 10000, Color.red, Time.fixedDeltaTime);
         Debug.DrawLine(m_middleBody.position, m_middleBody.position + alignmentDirection * 10000, Color.black, Time.fixedDeltaTime);
         foreach (Rigidbody body in m_bodyRigidbodies)
         {
