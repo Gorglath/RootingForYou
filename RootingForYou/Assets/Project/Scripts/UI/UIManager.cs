@@ -30,8 +30,8 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            setScore(score + 10);
+        /*if (Input.GetKeyDown(KeyCode.Space))
+            setScore(score + 10);*/
         updateMultiplier();
         updateScoreText();
         updateTimer();
