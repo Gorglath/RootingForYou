@@ -95,6 +95,9 @@ public class BodyController : MonoBehaviour
     }
     private void HandleFrozenAlignment()
     {
+        if (!m_isLocked)
+            return;
+
         Vector3 rightHandDirection = (m_rightHand.position - m_middleBody.position).normalized;
         rightHandDirection.z = 1;
         Vector3 leftHandDirection = (m_leftHand.position - m_middleBody.position).normalized;
