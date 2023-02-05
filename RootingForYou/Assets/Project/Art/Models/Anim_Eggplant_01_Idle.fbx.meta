@@ -1,29 +1,32 @@
 fileFormatVersion: 2
-guid: aabb41d1fb3c52b4799e02195bb3bf19
+guid: 02119b92fb9443141bd8f74da3a5211f
 ModelImporter:
   serializedVersion: 21202
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 1827226128182048838
+    second: Take 001
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_Blush_Color
+      name: M_Blush_Color3
     second: {fileID: 2100000, guid: 97b97909191f239419785c81ea04c5bf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_Body_Color
-    second: {fileID: 2100000, guid: 8c04027b7350f274886d85b0ac683419, type: 2}
+      name: M_Body_Color3
+    second: {fileID: 2100000, guid: f1cd990eb115e5541bee93fe14470c2b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_Face_Color
+      name: M_Face_Color3
     second: {fileID: 2100000, guid: 833d82099690c8242b52d80c88affcca, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_Leaf_Color
-    second: {fileID: 2100000, guid: 9e94574d9ad0c5147b1127ec8254493c, type: 2}
+      name: M_Leaf_Color3
+    second: {fileID: 2100000, guid: cc82bdd7f64f07c4bb00564435120fe8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

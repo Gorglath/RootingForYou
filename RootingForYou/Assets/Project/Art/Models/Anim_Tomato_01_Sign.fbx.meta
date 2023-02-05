@@ -21,7 +21,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: M_Body_Color
-    second: {fileID: 2100000, guid: 97b97909191f239419785c81ea04c5bf, type: 2}
+    second: {fileID: 2100000, guid: c137f356c963ff04d91f63409676eb54, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
