@@ -18,6 +18,7 @@ public class BodyController : MonoBehaviour
     [SerializeField] private Transform m_leftHand = null;
     [SerializeField] private Transform m_rightHand = null;
     [SerializeField] private Transform m_middleBody = null;
+    [SerializeField] private GameObject[] m_hats = null;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodyGravityForce = 10.0f;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_bodyRotationForce = 10.0f;
     [Range(1.0f, 10000.0f)] [SerializeField] private float m_bodySnappingUpForce = 10.0f;
@@ -32,6 +33,34 @@ public class BodyController : MonoBehaviour
     private bool m_isLocked = false;
     private bool m_isFrozen = false;
     private bool m_isTouchingGround = false;
+
+    public void SetHat(HatsEnum hatToSet)
+    {
+        switch (hatToSet)
+        {
+            case HatsEnum.ANVIL:
+                m_hats[0].SetActive(true);
+                break;
+            case HatsEnum.BUTTERFLY:
+                m_hats[1].SetActive(true);
+                break;
+            case HatsEnum.CLAYSTATUE:
+                m_hats[2].SetActive(true);
+                break;
+            case HatsEnum.HAT:
+                m_hats[3].SetActive(true);
+                break;
+            case HatsEnum.SCARF:
+                m_hats[4].SetActive(true);
+                break;
+            case HatsEnum.SHADES:
+                m_hats[5].SetActive(true);
+                break;
+            case HatsEnum.STRAWHAT:
+                m_hats[6].SetActive(true);
+                break;
+        }
+    }
     public void LockBody()
     {
         m_locksCount++;
