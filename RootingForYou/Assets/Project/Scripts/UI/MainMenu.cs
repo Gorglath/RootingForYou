@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Audio;
+
 public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenu, optionsMenu, creditsMenu;
@@ -21,6 +23,9 @@ public class MainMenu : MonoBehaviour
     [Header("Parameters")]
     [SerializeField] private PlayerInput m_playerInput = null;
     [SerializeField] private string m_navigateActionName = null;
+    [SerializeField] private string m_lockActionName = null;
+
+    public AudioMixer masterAudio;
     private void Start()
     {
         EventSystem.current.SetSelectedGameObject(mainMenuButtons[0]);
@@ -122,5 +127,10 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("QUIT");
         Application.Quit();
+    }
+
+    public void SetVolume(float pVolume)
+    {
+        masterAudio.SetFloat("Volume (of Master)", pVolume);
     }
 }

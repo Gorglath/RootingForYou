@@ -72,7 +72,7 @@ public class CharacterSelection : MonoBehaviour
             return;
         didReset = false;
         NavigateMenuVertically(NavigationInput.y);
-        //NavigateMenuHorizontally(NavigationInput.x);
+        NavigateMenuHorizontally(NavigationInput.x);
     }
 
     public void LoadMainMenu()
@@ -97,7 +97,8 @@ public class CharacterSelection : MonoBehaviour
                 PlayerOneHeadButtonIndex = PlayerOneHeadButtons.Count - 1;
 
             EventSystem.current.SetSelectedGameObject(
-            PlayerOneHeadButtons[PlayerOneHeadButtonIndex]);
+                PlayerOneHeadButtons[PlayerOneHeadButtonIndex]);
+            Debug.Log("Current Button Index: " + PlayerOneHeadButtonIndex);
             return;
         }
         
@@ -114,7 +115,7 @@ public class CharacterSelection : MonoBehaviour
                 PlayerOneCharacterButtonIndex = PlayerOneCharacterButtons.Count - 1;
 
             EventSystem.current.SetSelectedGameObject(
-            PlayerOneCharacterButtons[PlayerOneCharacterButtonIndex]);
+                PlayerOneCharacterButtons[PlayerOneCharacterButtonIndex]);
             return;
         }
         
