@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BodyController : MonoBehaviour
 {
     [Header("Parameters")]
+    [SerializeField] private UnityEvent m_onUnfreeze = null;
+    
+    [Space(20.0f)]
+
     [SerializeField] private HandGrabbingHelper[] m_groundDetectors = null;
     [SerializeField] private Rigidbody[] m_legsRigidbodies = null;
     [SerializeField] private Rigidbody[] m_bodyRigidbodies = null;

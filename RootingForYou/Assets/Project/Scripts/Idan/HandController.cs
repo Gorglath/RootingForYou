@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class HandController : MonoBehaviour
 {
     [Header("Parameters")]
+
+    [SerializeField] private UnityEvent m_onGrabbing = null;
+    [SerializeField] private UnityEvent m_onUngrabbing = null;
+    [SerializeField] private UnityEvent m_onFreeze = null;
+    [SerializeField] private UnityEvent m_onUnfreeze = null;
+
+    [Space(20.0f)]
     [SerializeField] private bool m_isToggleTypeGrab = false;
     [SerializeField] private PlayerInput m_playerInput = null;
     [SerializeField] private string m_moveActionName = null;
@@ -16,6 +24,11 @@ public class HandController : MonoBehaviour
     [SerializeField] private Rigidbody[] m_armRigidbodies = null;
     [SerializeField] private GameObject m_connectionPoint = null;
     [SerializeField] private HandGrabbingHelper m_handGrabbingHelper = null;
+    [SerializeField] private ParticleSystem m_grabbingPlayerParticleEffect = null;
+    [SerializeField] private ParticleSystem m_ungrabbingPlayerParticleEffect = null;
+    [SerializeField] private ParticleSystem m_freezingParticleEffect = null;
+    [SerializeField] private ParticleSystem m_unfreezingParticleEffect = null;
+   
     [Range(1.0f, 70.0f)] [SerializeField] private float m_maxDistanceFromBody = 1.0f;
     [Range(1.0f, 1000.0f)] [SerializeField] private float m_forceMultiplier = 10.0f;
     [Range(1.0f, 10000.0f)] [SerializeField] private float m_frozenForceMultiplier = 10.0f;
@@ -98,6 +111,9 @@ public class HandController : MonoBehaviour
     private void UnfreezeHand()
     {
         m_isFrozen = false;
+
+        m_onUnfreeze.Invoke();
+
         foreach (Rigidbody armBody in m_armRigidbodies)
         {
             armBody.isKinematic = false;
@@ -122,6 +138,8 @@ public class HandController : MonoBehaviour
     private void FreezeHand()
     {
         m_isFrozen = true;
+        m_onFreeze.Invoke();
+
         if(!m_isLeftHanded)
             m_frozenDirection = (m_handRigidbody.position - m_armRigidbodies[0].position);
         else 
@@ -133,6 +151,8 @@ public class HandController : MonoBehaviour
     {
         if (!m_isLocked)
             return;
+
+        m_onUngrabbing.Invoke();
 
         Rigidbody body = m_handGrabbingHelper.GetAvailableRigidbody();
         m_connectedBodyController = null;
@@ -154,6 +174,8 @@ public class HandController : MonoBehaviour
         Rigidbody body = m_handGrabbingHelper.GetAvailableRigidbody();
         if (!body)
             return;
+
+        m_onGrabbing.Invoke();
 
         m_connectedBodyController = body.GetComponentInParent<BodyController>();
        

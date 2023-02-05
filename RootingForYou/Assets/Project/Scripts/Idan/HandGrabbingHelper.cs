@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HandGrabbingHelper : MonoBehaviour
 {
     [Header("Parameters")]
+    [SerializeField] private UnityEvent m_onUnfreeze = null;
+
     [SerializeField] private string m_tagToGrab = null;
 
     //helpers
