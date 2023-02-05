@@ -36,30 +36,8 @@ public class BodyController : MonoBehaviour
 
     public void SetHat(HatsEnum hatToSet)
     {
-        switch (hatToSet)
-        {
-            case HatsEnum.ANVIL:
-                m_hats[0].SetActive(true);
-                break;
-            case HatsEnum.BUTTERFLY:
-                m_hats[1].SetActive(true);
-                break;
-            case HatsEnum.CLAYSTATUE:
-                m_hats[2].SetActive(true);
-                break;
-            case HatsEnum.HAT:
-                m_hats[3].SetActive(true);
-                break;
-            case HatsEnum.SCARF:
-                m_hats[4].SetActive(true);
-                break;
-            case HatsEnum.SHADES:
-                m_hats[5].SetActive(true);
-                break;
-            case HatsEnum.STRAWHAT:
-                m_hats[6].SetActive(true);
-                break;
-        }
+        int i = Random.Range(0, 7);
+        m_hats[i].SetActive(true);
     }
     public void LockBody()
     {

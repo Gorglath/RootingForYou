@@ -28,12 +28,11 @@ public class PlayerMeshManager : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer PlayerTwoRenderer = null;
     [SerializeField] private BodyController PlayerOneController = null;
     [SerializeField] private BodyController PlayerTwoController = null;
-    [SerializeField] private PlayerCharacterData PlayerOneTestData;
-    [SerializeField] private PlayerCharacterData PlayerTwoTestData;
+    [SerializeField] private PlayerCharacterData[] playerCharacterDatas;
     private void Start()
     {
-        SetPlayerMesh(PlayerOneTestData, 1);
-        SetPlayerMesh(PlayerTwoTestData, 2);
+        SetPlayerMesh(playerCharacterDatas[UnityEngine.Random.Range(0, playerCharacterDatas.Length)],1);
+        SetPlayerMesh(playerCharacterDatas[UnityEngine.Random.Range(0, playerCharacterDatas.Length)],0);
     }
     public void SetPlayerMesh(PlayerCharacterData data,int number)
     {
