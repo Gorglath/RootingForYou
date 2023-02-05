@@ -15,7 +15,7 @@ public class WallManager : MonoBehaviour
     public float speed  = 5.0f;
 
 
-    void Start()
+    void Awake()
     {
         walls = GetWalls();
         DeactivateWalls();
@@ -76,6 +76,7 @@ public class WallManager : MonoBehaviour
         Destroy(currentShadowWall.gameObject.GetComponentInChildren<Rigidbody>());
         BaseCollider baseCollider = FindObjectOfType<BaseCollider>();
         currentShadowWall.transform.position = new Vector3(baseCollider.transform.position.x, baseCollider.transform.position.y, baseCollider.transform.position.z);
+        currentShadowWall.transform.eulerAngles = currentWall.transform.eulerAngles;
         Material mat = AssetDatabase.LoadAssetAtPath("Assets/Project/Materials/ShadowWall.mat", typeof(Material)) as Material;
         currentShadowWall.GetComponent<MeshRenderer>().material = mat;
     }

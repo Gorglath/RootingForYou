@@ -11,14 +11,7 @@ public class Sensor : MonoBehaviour
 
     bool isHit = false;
     bool isCollision = false;
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-    }
+   
     private void OnDrawGizmos()
     {
         Gizmos.DrawSphere(transform.position, 0.5f);
@@ -75,9 +68,16 @@ public class Sensor : MonoBehaviour
     {
         return isCollision;
     }
-
+    public void ResetSensor()
+    {
+        isCollision = false;
+    }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Maybe");
+        if (!other.transform.parent)
+            return;
+
         if (other.transform.parent.CompareTag("Wall"))
         {
             Debug.Log("Wall collided with player mesh");

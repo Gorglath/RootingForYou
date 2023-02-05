@@ -27,7 +27,7 @@ public class Detector : MonoBehaviour
     [SerializeField]
     //private Sensor[] sensors;
     [Header("Sensor Groups")]
-    private SensorGroups[] groups;
+    public SensorGroups[] groups;
 
     private float averageDistance = 0.0f;
     public bool isColliding = false;

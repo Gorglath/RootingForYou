@@ -25,8 +25,6 @@ public class Master : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-
         //GetDetectors();
         wallManager = gameObject.GetComponent<WallManager>();
         Debug.Log(wallManager.GetCurrentWall().gameObject.name.ToString());
@@ -69,13 +67,28 @@ public class Master : MonoBehaviour
             }
 
             scoreManager.ComputeScore(averageDistance);
+            Debug.Log("WE DID IT AND GOT :" + scoreManager.GetScore());
             wallManager.ChangeWall();
+            ResetSensors();
             wallManager.GetCurrentWall().SetIsTriggered(false);
 
 
         }
 
 
+    }
+    private void ResetSensors()
+    {
+        foreach (Detector detector in detectors)
+        {
+            foreach(SensorGroups sensor in detector.groups)
+            {
+                foreach(Sensor sensor1 in sensor.sensors)
+                {
+                    sensor1.ResetSensor();
+                }
+            }
+        }
     }
     private void GetDetectors()
     {
