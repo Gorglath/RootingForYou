@@ -24,6 +24,7 @@ public class HandController : MonoBehaviour
     [SerializeField] private bool m_isLeftHanded = false;
     //helpers
     private CharacterJoint[] m_connectedPointJoints = null;
+    private BodyController m_connectedBodyController = null;
     private Vector3 m_frozenDirection = Vector3.zero;
     private Vector2 m_inputDirection = Vector2.zero;
     private bool m_enabledPhysics = true;
@@ -133,6 +134,9 @@ public class HandController : MonoBehaviour
         if (!m_isLocked)
             return;
 
+        Rigidbody body = m_handGrabbingHelper.GetAvailableRigidbody();
+        m_connectedBodyController = null;
+        
         m_bodyController.UnlockBody();
         m_isLocked = false;
         m_handGrabbingHelper.SetIsAbleToGrab(true);
@@ -151,6 +155,8 @@ public class HandController : MonoBehaviour
         if (!body)
             return;
 
+        m_connectedBodyController = body.GetComponentInParent<BodyController>();
+       
         m_bodyController.LockBody();
         m_isLocked = true;
 
@@ -187,6 +193,10 @@ public class HandController : MonoBehaviour
         float multiplier = Vector3.Distance(m_handRigidbody.position, m_bodyController.transform.position) / m_maxDistanceFromBody;
 
         m_bodyController.ApplyForceToBody(m_inputDirection * multiplier);
+        if (!m_connectedBodyController)
+            return;
+
+        m_connectedBodyController.ApplyForceToBody(-m_inputDirection * multiplier);
     }
 
     private void HandleHandMovement()

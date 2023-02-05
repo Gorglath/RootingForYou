@@ -8,6 +8,7 @@ public class BodyController : MonoBehaviour
     [SerializeField] private HandGrabbingHelper[] m_groundDetectors = null;
     [SerializeField] private Rigidbody[] m_legsRigidbodies = null;
     [SerializeField] private Rigidbody[] m_bodyRigidbodies = null;
+    [SerializeField] private Rigidbody[] m_allBodies = null;
     [SerializeField] private Transform m_leftHand = null;
     [SerializeField] private Transform m_rightHand = null;
     [SerializeField] private Transform m_middleBody = null;
@@ -81,6 +82,10 @@ public class BodyController : MonoBehaviour
             return;
 
         m_isFrozen = true;
+        foreach (Rigidbody body in m_allBodies)
+        {
+            body.isKinematic = true;
+        }
     }
 
     public void UnfreezeBody()
@@ -88,21 +93,21 @@ public class BodyController : MonoBehaviour
         m_freezeCount--;
 
         m_isFrozen = false;
-
+        foreach (Rigidbody body in m_allBodies)
+        {
+            body.isKinematic = false;
+        }
         if (m_freezeCount > 0)
             return;
 
     }
     private void HandleFrozenAlignment()
     {
-        if (!m_isLocked)
-            return;
-
         Vector3 rightHandDirection = (m_rightHand.position - m_middleBody.position).normalized;
         rightHandDirection.z = 1;
         Vector3 leftHandDirection = (m_leftHand.position - m_middleBody.position).normalized;
         leftHandDirection.z = 1;
-        Vector3 alignmentDirection = Vector3.Cross(rightHandDirection, leftHandDirection);
+        Vector3 alignmentDirection = -Vector3.Cross(rightHandDirection, leftHandDirection);
 
         float dot = Vector3.Dot(rightHandDirection,leftHandDirection);
 
@@ -120,7 +125,7 @@ public class BodyController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(m_isFrozen)
+        if(m_locksCount > 0)
         {
             HandleFrozenAlignment();
             return;
@@ -132,8 +137,9 @@ public class BodyController : MonoBehaviour
 
         m_isTouchingGround = m_groundDetectors[0].GetIsTouchingGround() && m_groundDetectors[1].GetIsTouchingGround();
 
-        if(!m_isTouchingGround)
+        if (!m_isTouchingGround)
             ApplyGravity();
+
 
         foreach (Rigidbody body in m_bodyRigidbodies)
         {

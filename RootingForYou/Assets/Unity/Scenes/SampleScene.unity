@@ -2864,6 +2864,25 @@ MonoBehaviour:
   - {fileID: 2125648197}
   - {fileID: 56612075}
   - {fileID: 2034653081}
+  m_allBodies:
+  - {fileID: 1263377414}
+  - {fileID: 2125648201}
+  - {fileID: 568315986}
+  - {fileID: 2125648199}
+  - {fileID: 1664452687}
+  - {fileID: 2125648197}
+  - {fileID: 1923426266}
+  - {fileID: 2092452604}
+  - {fileID: 604820614}
+  - {fileID: 541472996}
+  - {fileID: 1688031685}
+  - {fileID: 421019274}
+  - {fileID: 1131996873}
+  - {fileID: 147430111}
+  - {fileID: 56612075}
+  - {fileID: 955013845}
+  - {fileID: 2034653081}
+  - {fileID: 42017693}
   m_leftHand: {fileID: 444015798}
   m_rightHand: {fileID: 796663836}
   m_middleBody: {fileID: 2125648204}
@@ -4082,6 +4101,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: R4UCharaRig3 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ef42d2c4a7b9c5546b24b7e3fbc0d201,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1780030263480610251, guid: ef42d2c4a7b9c5546b24b7e3fbc0d201,
         type: 3}
       propertyPath: m_TagString
@@ -4318,6 +4342,25 @@ MonoBehaviour:
   - {fileID: 1467424139}
   - {fileID: 294005706}
   - {fileID: 592495933}
+  m_allBodies:
+  - {fileID: 1869187911}
+  - {fileID: 1869187907}
+  - {fileID: 1869187905}
+  - {fileID: 1725427972}
+  - {fileID: 520989486}
+  - {fileID: 1467424139}
+  - {fileID: 1233135173}
+  - {fileID: 260998551}
+  - {fileID: 741246902}
+  - {fileID: 1857217058}
+  - {fileID: 237608679}
+  - {fileID: 777070748}
+  - {fileID: 928916187}
+  - {fileID: 302146703}
+  - {fileID: 294005706}
+  - {fileID: 12794538}
+  - {fileID: 592495933}
+  - {fileID: 395477679}
   m_leftHand: {fileID: 1869187894}
   m_rightHand: {fileID: 1869187889}
   m_middleBody: {fileID: 1869187888}
@@ -4990,6 +5033,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: R4UCharaRig3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ef42d2c4a7b9c5546b24b7e3fbc0d201,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1780030263480610251, guid: ef42d2c4a7b9c5546b24b7e3fbc0d201,
         type: 3}
