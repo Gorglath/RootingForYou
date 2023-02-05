@@ -69,7 +69,8 @@ public class WallManager : MonoBehaviour
 
     private void MakeShadowWall()
     {
-        Destroy(currentShadowWall);
+        if(currentShadowWall)
+            Destroy(currentShadowWall.gameObject);
         currentShadowWall = Instantiate(currentWall);
         Destroy(currentShadowWall.gameObject.GetComponentInChildren<Collider>());
         Destroy(currentShadowWall.gameObject.GetComponentInChildren<Rigidbody>());
