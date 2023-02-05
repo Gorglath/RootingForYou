@@ -8,7 +8,7 @@ public class Wall : MonoBehaviour
     private float speed;
 
     private bool isTriggered = false;
-    DelayedEvent[] onWallMovement; 
+    public DelayedEvent[] onWallMovement; 
 
     // Start is called before the first frame update
     void Start()
