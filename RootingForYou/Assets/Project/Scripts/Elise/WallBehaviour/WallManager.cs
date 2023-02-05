@@ -34,12 +34,14 @@ public class WallManager : MonoBehaviour
         foreach(Wall wall in walls)
         {
             wall.gameObject.SetActive(false);
+            wall.GetShadow().SetActive(false);
         }
     }
     public void ChangeWall()
     {
         // Deactivate currentwall
         currentWall.gameObject.SetActive(false);
+        currentWall.GetShadow().SetActive(false);
         // Get random Wall
         currentWall = GetRandomWall();
         // Reset new Wall
@@ -69,15 +71,20 @@ public class WallManager : MonoBehaviour
 
     private void MakeShadowWall()
     {
-        if(currentShadowWall)
-            Destroy(currentShadowWall.gameObject);
-        currentShadowWall = Instantiate(currentWall);
-        Destroy(currentShadowWall.gameObject.GetComponentInChildren<Collider>());
-        Destroy(currentShadowWall.gameObject.GetComponentInChildren<Rigidbody>());
-        BaseCollider baseCollider = FindObjectOfType<BaseCollider>();
-        currentShadowWall.transform.position = new Vector3(baseCollider.transform.position.x, baseCollider.transform.position.y, baseCollider.transform.position.z);
-        currentShadowWall.transform.eulerAngles = currentWall.transform.eulerAngles;
-        Material mat = AssetDatabase.LoadAssetAtPath("Assets/Project/Materials/ShadowWall.mat", typeof(Material)) as Material;
-        currentShadowWall.GetComponent<MeshRenderer>().material = mat;
+        currentWall.GetShadow().SetActive(true);
+
+        //BaseCollider baseCollider = FindObjectOfType<BaseCollider>();
+        //currentWall.GetShadow().transform.position = new Vector3(baseCollider.transform.position.x, baseCollider.transform.position.y, baseCollider.transform.position.z);
+
+        //if (currentShadowWall)
+        //    Destroy(currentShadowWall.gameObject);
+        //currentShadowWall = Instantiate(currentWall);
+        //Destroy(currentShadowWall.gameObject.GetComponentInChildren<Collider>());
+        //Destroy(currentShadowWall.gameObject.GetComponentInChildren<Rigidbody>());
+        //BaseCollider baseCollider = FindObjectOfType<BaseCollider>();
+        //currentShadowWall.transform.position = new Vector3(baseCollider.transform.position.x, baseCollider.transform.position.y, baseCollider.transform.position.z);
+        //currentShadowWall.transform.eulerAngles = currentWall.transform.eulerAngles;
+        //Material mat = AssetDatabase.LoadAssetAtPath("Assets/Project/Materials/ShadowWall.mat", typeof(Material)) as Material;
+        //currentShadowWall.GetComponent<MeshRenderer>().material = mat;
     }
 }

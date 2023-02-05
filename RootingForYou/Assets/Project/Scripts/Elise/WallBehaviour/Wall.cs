@@ -8,6 +8,7 @@ public class Wall : MonoBehaviour
     private float speed;
 
     private bool isTriggered = false;
+    public GameObject shadow;
     public DelayedEvent[] onWallMovement; 
 
     // Start is called before the first frame update
@@ -34,6 +35,11 @@ public class Wall : MonoBehaviour
 
     }
 
+    public GameObject GetShadow()
+    {
+        Debug.Log("Shadow: " + shadow.name.ToString());
+        return shadow;
+    }
     public void UpdatePosition()
     {
         transform.Translate(Vector3.forward * Time.deltaTime * speed);
