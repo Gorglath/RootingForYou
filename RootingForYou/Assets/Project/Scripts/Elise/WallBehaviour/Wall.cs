@@ -8,7 +8,7 @@ public class Wall : MonoBehaviour
     private float speed;
 
     private bool isTriggered = false;
-
+    public DelayedEvent[] onWallMovement; 
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +37,7 @@ public class Wall : MonoBehaviour
     public void UpdatePosition()
     {
         transform.Translate(Vector3.forward * Time.deltaTime * speed);
+        DelayedEventManager.m_instance.InvokeDelayedEvents(onWallMovement);
     }
 
     void onTriggerPositionReached() { 
