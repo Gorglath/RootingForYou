@@ -7,6 +7,7 @@ public class HandGrabbingHelper : MonoBehaviour
 {
     [Header("Parameters")]
     [SerializeField] private DelayedEvent[] m_onSlamGround = null;
+    [SerializeField] private DelayedEvent[] m_onTouchPlayer = null;
 
     [SerializeField] private string m_tagToGrab = null;
     [SerializeField] private bool m_isBodyRelated = false;
@@ -31,10 +32,19 @@ public class HandGrabbingHelper : MonoBehaviour
         if (m_isBodyRelated)
         {
             if (GetComponent<Rigidbody>().velocity.magnitude > m_magnitudeToTriggerEvent)
-                DelayedEventManager.m_instance.InvokeDelayedEvents(m_onSlamGround);
+            {
+                if (!other.GetComponentInParent<BodyController>())
+                {
+                    DelayedEventManager.m_instance.InvokeDelayedEvents(m_onSlamGround);
+                }
+            }
         }
         else
         {
+            if (other.GetComponentInParent<BodyController>())
+            {
+                DelayedEventManager.m_instance.InvokeDelayedEvents(m_onTouchPlayer);
+            }
             m_availableBodyToGrab = other.GetComponent<Rigidbody>();
         }
     }
