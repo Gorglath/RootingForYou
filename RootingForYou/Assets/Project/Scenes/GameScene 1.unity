@@ -13761,9 +13761,29 @@ PrefabInstance:
       objectReference: {fileID: 1857926679}
     - target: {fileID: 323308181602531517, guid: 566634421efc5fe4ca6b35d5bfd046e9,
         type: 3}
+      propertyPath: onSpawnWall.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 323308181602531517, guid: 566634421efc5fe4ca6b35d5bfd046e9,
+        type: 3}
       propertyPath: detectors.Array.data[0]
       value: 
       objectReference: {fileID: 1748685552}
+    - target: {fileID: 323308181602531517, guid: 566634421efc5fe4ca6b35d5bfd046e9,
+        type: 3}
+      propertyPath: onSpawnWall.Array.data[0].m_relatedEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 323308181602531517, guid: 566634421efc5fe4ca6b35d5bfd046e9,
+        type: 3}
+      propertyPath: onSpawnWall.Array.data[0].m_relatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 323308181602531517, guid: 566634421efc5fe4ca6b35d5bfd046e9,
+        type: 3}
+      propertyPath: onSpawnWall.Array.data[0].m_relatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 323308181602531518, guid: 566634421efc5fe4ca6b35d5bfd046e9,
         type: 3}
       propertyPath: m_Name
